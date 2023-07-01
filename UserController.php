@@ -61,7 +61,7 @@ class UserController{
 
             // Return the student details as a response, either by rendering a template or sending a JSON response
             
-            echo json_encode($student);
+            echo json_encode([$student],JSON_FORCE_OBJECT);
         } else {
             // Return a not found response
             header('HTTP/1.0 404 Not Found');
@@ -78,19 +78,21 @@ class UserController{
     public function getAllUsers(){
         
         // Prepare and execute the select query
+        
+        // echo "Key ".$_REQUEST['requestkey'];
         $selectQuery = "SELECT * FROM table_web_users";
-        $result = $this->connection->query($selectQuery);
+            $result = $this->connection->query($selectQuery);
 
-        // Check if there are any students
-        if ($result->rowCount() > 0) {
-            
-            $students = $result->fetchAll();            
-            echo json_encode($students);
-        }
-        else{
-            header('HTTp/1.0 404 Not found');
-            echo json_encode(['404'=>'empty table']);
-        }
+            // Check if there are any students
+            if ($result->rowCount() > 0) {
+                
+                $students = $result->fetchAll();            
+                echo json_encode([$students], JSON_FORCE_OBJECT);
+            }
+            else{
+                header('HTTp/1.0 404 Not found');
+                echo json_encode(['404'=>'empty table']);
+            }
     }
 
     /**
